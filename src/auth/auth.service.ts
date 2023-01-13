@@ -15,7 +15,7 @@ export class AuthService {
     const hash = await argon.hash(dto.password);
 
     try {
-      return await this.prisma.adminUser.create({
+      return await this.prisma.user.create({
         data: {
           email: dto.email,
           hash,
@@ -39,7 +39,7 @@ export class AuthService {
   }
 
   async signin(dto: AuthDto) {
-    const user = await this.prisma.adminUser.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
       },
