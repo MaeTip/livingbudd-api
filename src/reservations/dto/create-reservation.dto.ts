@@ -1,7 +1,7 @@
 import { Gender, Vehicle } from "@prisma/client";
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Transform, Type } from 'class-transformer';
-import { IsNotEmpty, IsString, IsEmail, IsEnum, IsNumber, IsBoolean, IsInt } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsNotEmpty, IsString, IsEmail, IsEnum, IsInt } from 'class-validator';
 import { ToBoolean } from "@common/decorator"
 
 export class CreateReservationDto {
