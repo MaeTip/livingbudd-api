@@ -1,17 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-// import { ConfigService } from '@nestjs/config';
-
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PrismaService extends PrismaClient {
-    constructor() {
-        super({
-            datasources: {
-                db: {
-                    url: "mysql://root:1234567890@localhost:3307/living-budd-development",
-                },
-            },
-        });
-    }
+  constructor(config: ConfigService) {
+    super({
+      datasources: {
+        db: {
+          url: config.get('DATABASE_URL'),
+        },
+      },
+    });
+  }
+
+  cleanDb() {
+    return this.$transaction([this.user.deleteMany()]);
+  }
 }

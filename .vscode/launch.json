@@ -2,9 +2,16 @@
     "configurations": [
         {
             "type": "node-terminal",
-            "name": "Run Script: start:dev",
+            "name": "Run Dev Server",
             "request": "launch",
             "command": "yarn run start:dev",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "node-terminal",
+            "name": "db:dev:restart",
+            "request": "launch",
+            "command": "yarn run db:dev:restart",
             "cwd": "${workspaceFolder}"
         }
     ]
