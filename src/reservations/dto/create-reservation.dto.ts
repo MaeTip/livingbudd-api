@@ -16,7 +16,7 @@ export class CreateReservationDto {
     fullName: string;
 
     @ApiProperty()
-    @IsEnum(Gender)
+    // @IsEnum(Gender)
     @IsNotEmpty()
     gender: Gender;
 
@@ -47,7 +47,7 @@ export class CreateReservationDto {
     has_pet: boolean;
 
     @ApiProperty()
-    @IsEnum(Vehicle)
+    // @IsEnum(Vehicle)
     @IsNotEmpty()
     vehicle: Vehicle
 

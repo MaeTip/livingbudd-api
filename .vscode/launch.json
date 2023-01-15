@@ -1,10 +1,18 @@
 {
     "configurations": [
+
         {
             "type": "node-terminal",
-            "name": "Run Dev Server",
+            "name": "Run Dev",
             "request": "launch",
             "command": "yarn run start:dev",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "node-terminal",
+            "name": "Run Prod",
+            "request": "launch",
+            "command": "yarn run start:prod",
             "cwd": "${workspaceFolder}"
         },
         {

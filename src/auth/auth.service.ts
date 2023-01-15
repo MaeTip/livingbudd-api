@@ -6,7 +6,6 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthDto, AdminUserDto } from './dto';
 import * as argon from 'argon2';
 
-
 @Injectable({})
 export class AuthService {
   constructor(private prisma: PrismaService, private config: ConfigService, private jwt: JwtService) {}
