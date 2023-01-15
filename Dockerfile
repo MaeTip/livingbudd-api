@@ -18,10 +18,10 @@ FROM node:16.14 AS deploy
 WORKDIR /app
 
 COPY package*.json .
-COPY .env.example .
+COPY .env.example .env
 
+COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/prisma ./prisma
-COPY --from=build /app/node_modules ./node_modules
 
-CMD yarn run start:prod
+CMD yarn run start:migrate:prod
