@@ -13,9 +13,7 @@ export class HealthController {
   @HealthCheck()
   check() {
     return this.health.check([
-      () => this.http.pingCheck('basic check', 'http://localhost:8080'),
-      () => this.memory.checkHeap('memory_heap', 300*1024*1024),
-      () => this.memory.checkRSS('memory_rss', 300*1024*1024),
+      () => this.http.pingCheck('basic check', 'http://localhost:8080')
     ]);
   }
 }
