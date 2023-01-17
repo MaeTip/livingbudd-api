@@ -5,8 +5,9 @@ env:
     AWS_ACCOUNT_ID: "312726873549"
     CLUSTER: "livingbudd-production-cluster"
     SERVICE_NAME: "livingbudd-api-production-ecs-service"
-    FAMILY: "livingbudd-api-production"
+    FAMILY: "livingbudd-api"
     IMAGE_NAME: "livingbudd-api"
+    CONTAINER_NAME: "livingbudd-api-production-container"
     TASKDEF_TEMPLATE_FILE: "taskdef.template.json"
     DESIRED_COUNT: "1"
 
@@ -42,7 +43,7 @@ phases:
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
-      - sed -e "s;%NAME%;${IMAGE_NAME};g" -e "s;%REPOSITORY_URI%;${REPOSITORY_URI_WITH_TAG};g" -e "s;%SSM_PARMS_ARN%;${SSM_PARMS_ARN};g" -e "s;%EXECUTION_ROLE_ARN%;${EXECUTION_ROLE_ARN};g" $TASKDEF_TEMPLATE_FILE > $TASKDEF_FILE
+      - sed -e "s;%NAME%;${IMAGE_NAME};g" -e "s;%CONTAINER_NAME%;${CONTAINER_NAME};g" -e "s;%REPOSITORY_URI%;${REPOSITORY_URI_WITH_TAG};g" -e "s;%SSM_PARMS_ARN%;${SSM_PARMS_ARN};g" -e "s;%EXECUTION_ROLE_ARN%;${EXECUTION_ROLE_ARN};g" $TASKDEF_TEMPLATE_FILE > $TASKDEF_FILE
       - echo Create TaskDefinition..
       - REVISION=`aws ecs register-task-definition --family $FAMILY --cli-input-json file://$TASKDEF_FILE --region $AWS_DEFAULT_REGION | jq .taskDefinition.revision`
       - echo Update Service..
