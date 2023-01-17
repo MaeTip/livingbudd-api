@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { RoomModule } from './room/room.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ReservationsModule } from './reservations/reservations.module';
+import { HealthModule } from './health/health.module';
 import appConfig from './config/app.config';
 
 @Module({
@@ -21,7 +22,7 @@ import appConfig from './config/app.config';
     PrismaModule,
     AuthModule,
     UserModule,
-    RoomModule, ReservationsModule,
+    RoomModule, ReservationsModule, HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
