@@ -1,6 +1,10 @@
 {
   "family": "%NAME%",
   "executionRoleArn": "%EXECUTION_ROLE_ARN%",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
   "containerDefinitions": [
     {
       "image": "%REPOSITORY_URI%",
@@ -44,8 +48,5 @@
         }
       ]
     }
-  ],
-  "requiresCompatibilities": [
-    "FARGATE"
   ]
 }
