@@ -1,5 +1,6 @@
 {
   "family": "%NAME%",
+  "executionRoleArn": "%EXECUTION_ROLE_ARN%",
   "containerDefinitions": [
     {
       "image": "%REPOSITORY_URI%",
