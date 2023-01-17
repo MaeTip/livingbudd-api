@@ -1,0 +1,47 @@
+{
+  "family": "%NAME%",
+  "containerDefinitions": [
+    {
+      "image": "%REPOSITORY_URI%",
+      "name": "%NAME%",
+      "cpu": 128,
+      "memory": 256,
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 0
+        }
+      ],
+      "ulimits": [
+        {
+          "name": "nofile",
+          "softLimit": 1024000,
+          "hardLimit": 1024000
+        }
+      ],
+      "secrets": [
+        {
+          "valueFrom": "%SSM_PARMS_ARN%/livingbudd_db_host",
+          "name": "DB_HOST"
+        },
+        {
+          "valueFrom": "%SSM_PARMS_ARN%/livingbudd_db_name",
+          "name": "DB_NAME"
+        },
+        {
+          "valueFrom": "%SSM_PARMS_ARN%/livingbudd_db_username",
+          "name": "DB_USERNAME"
+        },
+        {
+          "valueFrom": "%SSM_PARMS_ARN%/livingbudd_db_password",
+          "name": "DB_PASSWORD"
+        },
+        {
+          "valueFrom": "%SSM_PARMS_ARN%/livingbudd_app_jwt_secret",
+          "name": "JWT_SECRET"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+version: 0.2
+
+env:
+  variables:
+    AWS_ACCOUNT_ID: "312726873549"
+    CLUSTER: "livingbudd-production-cluster"
+    SERVICE_NAME: "livingbudd-production-ecs-service"
+    FAMILY: "livingbudd-production"
+    IMAGE_NAME: "livingbudd-production"
+    TASKDEF_TEMPLATE_FILE: "taskdef.template.json"
+    DESIRED_COUNT: "1"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 16
+    commands:
+      - echo Installing app dependencies...
+      - yarn install
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password | docker login --username AWS --password-stdin https://$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME
+      - SSM_PARMS_ARN=arn:aws:ssm:$AWS_DEFAULT_REGION:$AWS_ACCOUNT_ID:parameter
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+      - TASKDEF_FILE=${TASKDEF_TEMPLATE_FILE}-${IMAGE_TAG}
+      - REPOSITORY_URI_WITH_TAG=$REPOSITORY_URI:$IMAGE_TAG
+      - TASKDEF_FILE=taskdef-$IMAGE_TAG.json
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Run tests...
+      - yarn run test
+      - echo Building the Docker image...
+      - docker build --build-arg BUILD_NUMBER=${CODEBUILD_BUILD_ID} --build-arg REVISION=${CODEBUILD_SOURCE_VERSION} -t $REPOSITORY_URI:latest .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Writing image definitions file...
+      - sed -e "s;%NAME%;${IMAGE_NAME};g" -e "s;%REPOSITORY_URI%;${REPOSITORY_URI_WITH_TAG};g" -e "s;%SSM_PARMS_ARN%;${SSM_PARMS_ARN};g" $TASKDEF_TEMPLATE_FILE > $TASKDEF_FILE
+      - echo Create TaskDefinition..
+      - REVISION=`aws ecs register-task-definition --family $FAMILY --cli-input-json file://$TASKDEF_FILE --region $AWS_DEFAULT_REGION | jq .taskDefinition.revision`
+      - echo Update Service..
+      - aws ecs update-service --cluster $CLUSTER --region $AWS_DEFAULT_REGION --service $SERVICE_NAME --task-definition $FAMILY:$REVISION --desired-count $DESIRED_COUNT --force-new-deployment
+      - echo Deploy completed on `date`
+artifacts:
+  files: $TASKDEF_FILE
+cache:
+  paths:
+    - './node_modules/**/*'
