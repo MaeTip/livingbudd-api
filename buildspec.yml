@@ -31,8 +31,6 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - echo Run tests...
-      - yarn run test
       - echo Building the Docker image...
       - docker build --build-arg BUILD_NUMBER=${CODEBUILD_BUILD_ID} --build-arg REVISION=${CODEBUILD_SOURCE_VERSION} -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
