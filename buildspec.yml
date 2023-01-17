@@ -46,7 +46,7 @@ phases:
       - echo Create TaskDefinition..
       - REVISION=`aws ecs register-task-definition --family $FAMILY --cli-input-json file://$TASKDEF_FILE --region $AWS_DEFAULT_REGION | jq .taskDefinition.revision`
       - echo Update Service..
-      - aws ecs update-service --cluster $CLUSTER --region $AWS_DEFAULT_REGION --service $SERVICE_NAME --task-definition $FAMILY:$REVISION --desired-count $DESIRED_COUNT --force-new-deployment --requires-compatibilities 'fargate'
+      - aws ecs update-service --cluster $CLUSTER --region $AWS_DEFAULT_REGION --service $SERVICE_NAME --task-definition $FAMILY:$REVISION --desired-count $DESIRED_COUNT --force-new-deployment
       - echo Deploy completed on `date`
 artifacts:
   files: $TASKDEF_FILE
