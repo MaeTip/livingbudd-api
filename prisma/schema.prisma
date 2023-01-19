@@ -19,6 +19,7 @@ model User {
   hash String
   firstName String?
   lastName String?
+  role Role @default(USER)
 }
 
 
@@ -38,6 +39,11 @@ model Reservation {
   vehicle Vehicle @default(NO)
   working_address String?
   additional_request String?
+}
+
+enum Role {
+  ADMIN
+  USER
 }
 
 enum Gender {
