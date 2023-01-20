@@ -30,8 +30,8 @@ async function bootstrap() {
       'https://livingbudd.com',
     ]
   });
-
-  // app.enableCors();
+  app.setGlobalPrefix('api');
+  
   await app.listen(configService.get('app.port'));
 }
 bootstrap();

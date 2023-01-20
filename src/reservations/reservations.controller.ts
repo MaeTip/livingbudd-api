@@ -15,11 +15,13 @@ export class ReservationsController {
     return this.reservationsService.create(createReservationDto);
   }
 
+  @UseGuards(JwtGuard)
   @Get()
   findAll() {
     return this.reservationsService.findAll();
   }
 
+  @UseGuards(JwtGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.reservationsService.findOne(+id);

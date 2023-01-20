@@ -29,12 +29,12 @@ model Reservation {
   updatedAt DateTime @default(now())
 
   email String
-  fullName String?
+  fullname String?
   gender Gender
   age Int?
   phone String?
   contact String?
-  numberOfTenant Int?
+  number_of_tenant Int?
   has_pet Boolean @default(false)
   vehicle Vehicle @default(NO)
   working_address String?

@@ -9,11 +9,14 @@ export class ReservationsService {
 
   async create(createReservationDto: CreateReservationDto) {
     try {
-      return await this.prisma.reservation.create({
+       const result = await this.prisma.reservation.create({
         data: {
           ...createReservationDto,
         }
       });
+      return {
+        data: result
+      }
     } catch (error) {
       throw error;
     }

@@ -13,7 +13,7 @@ export class CreateReservationDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    fullName: string;
+    fullname: string;
 
     @ApiProperty()
     // @IsEnum(Gender)
@@ -39,7 +39,7 @@ export class CreateReservationDto {
     @IsNotEmpty()
     @IsInt()
     @Type(() => Number)
-    numberOfTenant: number;
+    number_of_tenant: number;
 
     @ApiProperty()
     @IsNotEmpty()
