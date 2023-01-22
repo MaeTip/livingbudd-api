@@ -1,13 +1,14 @@
 import { Gender, Vehicle } from "@prisma/client";
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsString, IsEmail, IsEnum, IsInt, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, IsEmail, IsEnum, IsInt, IsOptional, ValidateIf } from 'class-validator';
 import { ToBoolean } from "@common/decorator"
 
 export class CreateReservationDto {
     @ApiProperty()
+    @IsOptional()
     @IsEmail()
-    @IsNotEmpty()
+    @ValidateIf(o => o.email)
     email: string;
 
     @ApiProperty()
@@ -17,11 +18,11 @@ export class CreateReservationDto {
 
     @ApiProperty()
     // @IsEnum(Gender)
-    @IsNotEmpty()
+    @IsOptional()
     gender: Gender;
 
     @ApiProperty()
-    @IsNotEmpty()
+    @IsOptional()
     @Type(() => Number)
     @IsInt()
     age: number;
@@ -37,7 +38,7 @@ export class CreateReservationDto {
     contact: string;
     
     @ApiProperty()
-    @IsNotEmpty()
+    @IsOptional()
     @IsInt()
     @Type(() => Number)
     number_of_tenant: number;

@@ -24,7 +24,11 @@ export class ReservationsService {
 
   async findAll() {
     try {
-      return await this.prisma.reservation.findMany();
+      const result =  await this.prisma.reservation.findMany();
+
+      return {
+        data: result
+      }
     } catch (error) {
       throw error;
     }
