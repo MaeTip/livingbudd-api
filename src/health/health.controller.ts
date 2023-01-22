@@ -13,7 +13,7 @@ export class HealthController {
   @HealthCheck()
   check() {
     return this.health.check([
-      () => this.http.pingCheck('basic check', 'http://localhost:8080')
+      () => this.http.pingCheck('basic check', 'http://localhost:8080/api')
     ]);
   }
 }
