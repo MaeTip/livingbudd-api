@@ -46,8 +46,22 @@ export class ReservationsService {
     }
   }
 
-  update(id: number, updateReservationDto: UpdateReservationDto) {
-    return `This action updates a #${id} reservation`;
+  async update(id: number, updateReservationDto: UpdateReservationDto) {
+    try {
+      const result = await this.prisma.reservation.update({
+        where: {
+          id,
+        },
+       data: {
+         ...updateReservationDto,
+       }
+     });
+     return {
+       data: result
+     }
+   } catch (error) {
+     throw error;
+   }
   }
 
   async remove(id: number) {
