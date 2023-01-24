@@ -49,6 +49,11 @@ export class CreateReservationDto {
     has_pet: boolean;
 
     @ApiProperty()
+    @ToBoolean()
+    @IsOptional()
+    air_conditioner_request: boolean;
+
+    @ApiProperty()
     @IsOptional()
     // @IsEnum(Vehicle)
     vehicle: Vehicle

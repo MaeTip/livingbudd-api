@@ -36,6 +36,7 @@ model Reservation {
   contact String?
   number_of_tenant Int?
   has_pet Boolean @default(false)
+  air_conditioner_request Boolean @default(false)
   vehicle Vehicle @default(NO)
   working_address String?
   additional_request String?
