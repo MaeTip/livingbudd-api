@@ -47,6 +47,22 @@
         {
           "valueFrom": "%SSM_PARMS_ARN%/livingbudd_app_jwt_secret",
           "name": "JWT_SECRET"
+        },
+        {
+          "valueFrom": "%SSM_PARMS_ARN%/livingbudd_app_smtp_username",
+          "name": "SMTP_USERNAME"
+        },
+        {
+          "valueFrom": "%SSM_PARMS_ARN%/livingbudd_app_smtp_password",
+          "name": "SMTP_PASSWORD"
+        },
+        {
+          "valueFrom": "%SSM_PARMS_ARN%/livingbudd_app_smtp_default_receiver",
+          "name": "SMTP_DEFAULT_RECEIVER"
+        },
+        {
+          "valueFrom": "%SSM_PARMS_ARN%/livingbudd_app_smtp_default_sender",
+          "name": "SMTP_DEFAULT_SENDER"
         }
       ]
     }
