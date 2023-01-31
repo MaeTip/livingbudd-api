@@ -20,4 +20,17 @@ export class RoomOwnersService {
       throw error;
     }
   }
+
+ async findAll() {
+  try {
+    const result = await this.prisma.roomOwner.findMany();
+
+    return {
+      data: result
+    }
+  } catch (error) {
+    throw error;
+  }
+ }
+ 
 }
