@@ -10,8 +10,8 @@ export class RoomOwnersController {
     private readonly roomOwnersService: RoomOwnersService, 
   ) { }
 
-  @Post()
-  create(@Body() createRoomOwnerDto: CreateRoomOwnerDto) {
+  @Post('register')
+  register(@Body() createRoomOwnerDto: CreateRoomOwnerDto) {
     return this.roomOwnersService.create(createRoomOwnerDto)
   }
 }
