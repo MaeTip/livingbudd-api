@@ -22,6 +22,20 @@ model User {
   role Role @default(USER)
 }
 
+model RoomOwner {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  fullname String
+  phone String
+  email String?
+  contact String?
+  room_location String
+  room_price Int
+  room_condition String?
+  room_detail String?
+}
 
 model Reservation {
   id Int @id @default(autoincrement())

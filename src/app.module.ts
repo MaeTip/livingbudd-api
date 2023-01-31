@@ -9,6 +9,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ReservationsModule } from './reservations/reservations.module';
 import { HealthModule } from './health/health.module';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { RoomOwnersModule } from './room-owners/room-owners.module';
 import appConfig from './config/app.config';
 import smtpConfig from './config/smtp.config';
 
@@ -35,9 +36,12 @@ import smtpConfig from './config/smtp.config';
       },
     }),
     PrismaModule,
+    HealthModule,
     AuthModule,
     UserModule,
-    RoomModule, ReservationsModule, HealthModule,
+    RoomModule, 
+    ReservationsModule, 
+    RoomOwnersModule
   ],
   controllers: [AppController],
   providers: [AppService],
