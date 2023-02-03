@@ -1,8 +1,8 @@
 
 import * as pactum from 'pactum';
-import { AdminUserDto } from 'src/auth/dto';
+import { UserSignUpDto } from 'src/auth/dto';
 
-const dto: AdminUserDto = {
+const dto: UserSignUpDto = {
   email: 'test@gmail.com',
   password: '1112',
   firstName: 'John',
@@ -58,7 +58,7 @@ describe('Auth', () => {
           password: dto.password,
         })
         .expectStatus(200)
-        .stores('userAt', 'token');
+        .stores('accessTokenAdmin', 'access_token');
     });
 
     it('should throw exception if email empty', () => {

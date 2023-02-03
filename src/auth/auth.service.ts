@@ -3,14 +3,15 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { JwtService } from '@nestjs/jwt';
-import { AuthDto, AdminUserDto } from './dto';
+import { AuthDto, AdminSignUpDto, UserSignUpDto } from './dto';
 import * as argon from 'argon2';
+import { Role } from '@prisma/client';
 
 @Injectable({})
 export class AuthService {
   constructor(private prisma: PrismaService, private config: ConfigService, private jwt: JwtService) {}
 
-  async signup(dto: AdminUserDto) {
+  async signup(dto: UserSignUpDto) {
     const hash = await argon.hash(dto.password);
 
     try {
@@ -20,6 +21,34 @@ export class AuthService {
           hash,
           firstName: dto.firstName,
           lastName: dto.lastName,
+        },
+        select: {
+          id: true,
+          email: true,
+          createdAt: true,
+        },
+      });
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2002') {
+          throw new ForbiddenException('Credentials taken');
+        }
+      }
+      throw error;
+    }
+  }
+
+  async adminSignup(dto: AdminSignUpDto) {
+    const hash = await argon.hash(dto.password);
+
+    try {
+      return await this.prisma.user.create({
+        data: {
+          email: dto.email,
+          hash,
+          firstName: dto.firstName,
+          lastName: dto.lastName,
+          role: Role.ADMIN
         },
         select: {
           id: true,
