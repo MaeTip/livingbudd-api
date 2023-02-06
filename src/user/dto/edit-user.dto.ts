@@ -15,6 +15,5 @@ export class EditUserDto {
   lastName?: string;
 
   @IsOptional()
-  // @IsEnum(Vehicle)
   role?: Role
 }

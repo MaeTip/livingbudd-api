@@ -3,14 +3,59 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { JwtService } from '@nestjs/jwt';
-import { AuthDto, AdminUserDto } from './dto';
+import { AuthDto, AdminSignUpDto, UserSignUpDto } from './dto';
+import { AuthEntity } from './entity/auth.entity';
 import * as argon from 'argon2';
+import { Role } from '@prisma/client';
 
 @Injectable({})
 export class AuthService {
   constructor(private prisma: PrismaService, private config: ConfigService, private jwt: JwtService) {}
 
-  async signup(dto: AdminUserDto) {
+  async signup(dto: UserSignUpDto): Promise<AuthEntity> {
+    const hash = await argon.hash(dto.password);
+    const secret = this.config.get('JWT_SECRET');
+    let authEntity: AuthEntity;
+
+    try {
+      const user = await this.prisma.user.create({
+        data: {
+          email: dto.email,
+          hash,
+          firstName: dto.firstName,
+          lastName: dto.lastName,
+        },
+        select: {
+          id: true,
+          email: true,
+        },
+      });
+
+      const token = await this.jwt.signAsync({
+        sub: user.id,
+        email: user.email,
+      }, {
+        expiresIn: '5d',
+        secret: secret,
+      });
+
+      authEntity = {
+        access_token: token,
+        user_id: user.id as unknown as string
+      }
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2002') {
+          throw new ForbiddenException('Credentials taken');
+        }
+      }
+      throw error;
+    }
+
+    return authEntity;
+  }
+
+  async adminSignup(dto: AdminSignUpDto) {
     const hash = await argon.hash(dto.password);
 
     try {
@@ -20,6 +65,7 @@ export class AuthService {
           hash,
           firstName: dto.firstName,
           lastName: dto.lastName,
+          role: Role.ADMIN
         },
         select: {
           id: true,
