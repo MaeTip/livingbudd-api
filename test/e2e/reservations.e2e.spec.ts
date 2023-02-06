@@ -42,6 +42,17 @@ describe('Reservation', () => {
           Authorization: 'Bearer $S{adminAccessToken}'
         })
     });
+
+    it('should throw error getting the new reservation rooms as non admin', () => {
+      return pactum
+        .spec()
+        .get('/reservations/{id}')
+        .withPathParams('id', '$S{reservationId}')
+        .expectStatus(200)
+        .withHeaders({
+          Authorization: 'Bearer $S{accessToken-user1}'
+        })
+    });
   });
 
 });

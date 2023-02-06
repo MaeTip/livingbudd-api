@@ -78,6 +78,7 @@ global.beforeAll(async () => {
   const adminUser = await createAdminUser()
 
   await pactum.spec('loginAdminUser', adminUser);
+  await pactum.spec('createUser', 'user1');
 });
 
 global.afterAll(async () => {

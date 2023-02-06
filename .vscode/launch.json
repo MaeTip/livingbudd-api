@@ -1,5 +1,12 @@
 {
     "configurations": [
+        {
+            "type": "node-terminal",
+            "name": "Run Test",
+            "request": "launch",
+            "command": "yarn run test:e2e",
+            "cwd": "${workspaceFolder}"
+        },
 
         {
             "type": "node-terminal",

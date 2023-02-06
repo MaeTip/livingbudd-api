@@ -4,6 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { JwtService } from '@nestjs/jwt';
 import { AuthDto, AdminSignUpDto, UserSignUpDto } from './dto';
+import { AuthEntity } from './entity/auth.entity';
 import * as argon from 'argon2';
 import { Role } from '@prisma/client';
 
@@ -11,11 +12,13 @@ import { Role } from '@prisma/client';
 export class AuthService {
   constructor(private prisma: PrismaService, private config: ConfigService, private jwt: JwtService) {}
 
-  async signup(dto: UserSignUpDto) {
+  async signup(dto: UserSignUpDto): Promise<AuthEntity> {
     const hash = await argon.hash(dto.password);
+    const secret = this.config.get('JWT_SECRET');
+    let authEntity: AuthEntity;
 
     try {
-      return await this.prisma.user.create({
+      const user = await this.prisma.user.create({
         data: {
           email: dto.email,
           hash,
@@ -25,9 +28,21 @@ export class AuthService {
         select: {
           id: true,
           email: true,
-          createdAt: true,
         },
       });
+
+      const token = await this.jwt.signAsync({
+        sub: user.id,
+        email: user.email,
+      }, {
+        expiresIn: '5d',
+        secret: secret,
+      });
+
+      authEntity = {
+        access_token: token,
+        user_id: user.id as unknown as string
+      }
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -36,6 +51,8 @@ export class AuthService {
       }
       throw error;
     }
+
+    return authEntity;
   }
 
   async adminSignup(dto: AdminSignUpDto) {
