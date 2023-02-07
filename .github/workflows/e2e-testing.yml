@@ -30,4 +30,5 @@ jobs:
         if: success() || failure()
         with:
           name: JEST Tests
-          path: coverage/jest-junit.xml
+          path: coverage/jest-junit.xml    
+          reporter: jest-junit
