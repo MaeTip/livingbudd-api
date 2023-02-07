@@ -24,7 +24,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "pretest:test:e2e": "yarn db:test:restart",
-    "test:e2e": "dotenv -e .env.test -- jest --no-cache --runInBand",
+    "test:e2e": "dotenv -e .env.test -- jest --no-cache --runInBand  --coverage",
     "test:e2e:watch": "dotenv -e .env.test -- jest --watch --no-cache --runInBand --forceExit",
     "prisma:test:deploy": "dotenv -e .env.test -- prisma migrate deploy",
     "db:test:restart": "yarn db:test:rm && yarn db:test:up && sleep 10 && yarn prisma:test:deploy",
@@ -86,7 +86,7 @@
   },
   "jest": {
     "rootDir": ".",
-    "coverageDirectory": "<rootDir>/test/coverage",
+    "coverageDirectory": "<rootDir>/test-report",
     "moduleFileExtensions": [
       "js",
       "json",
@@ -98,7 +98,7 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "src/**/*.(t|j)s"
     ],
     "modulePaths": ["<rootDir>"],
     "moduleNameMapper": {

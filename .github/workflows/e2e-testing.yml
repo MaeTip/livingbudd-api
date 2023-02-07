@@ -17,11 +17,18 @@ jobs:
           node-version: "16"
       - name: Installing dependencies
         run: yarn install
-      - name: Create and populate .env.test file
+      - name: Create .env.test
         run: |
           cp .env.example .env.test
         shell: bash
-      - name: create db:test
+      - name: docker-compose up for db:test
         run: yarn run db:test:restart
       - name: run e2e testing
         run: yarn run test:e2e
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()    # run this step even if previous step failed
+        with:
+          name: JEST Tests            # Name of the check run which will be created
+          path: test-report/*.xml    
+          reporter: jest-junit   
