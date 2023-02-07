@@ -135,8 +135,8 @@ describe('Reservation', () => {
         .withHeaders({
           Authorization: 'Bearer $S{accessToken-user1}'
         })
-        .expectStatus(403)
-    });
+        .expectStatus(HttpStatus.FORBIDDEN)
+      });
   });
 
   describe('Delete Reservation', () => {
@@ -164,7 +164,7 @@ describe('Reservation', () => {
             id: '$S{reservationId}'
           },
         })
-        .expectStatus(HttpStatus.OK).inspect()
+        .expectStatus(HttpStatus.OK)
     });
   });
 

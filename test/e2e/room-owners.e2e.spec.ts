@@ -34,7 +34,11 @@ describe('RoomOwner', () => {
         .post('/room-owners/register')
         .withBody(createRoomOwnerDto)
         .expectStatus(HttpStatus.CREATED)
-        .expectJsonMatch('data', createRoomOwnerDto)
+        .expectJsonMatch('data', {
+          is_mark_as_read: false,
+          admin_comment: null,
+          ...createRoomOwnerDto
+        })
         .stores('roomOwnerId', 'data.id')
     });
 
@@ -97,31 +101,58 @@ describe('RoomOwner', () => {
   });
 
   describe('Update Room Owner', () => {
-    it('should update the room owner as admin', () => {
-      return pactum
-        .spec()
-        .patch('/room-owners/{id}')
-        .withPathParams('id', '$S{roomOwnerId}')
-        .withHeaders({
-          Authorization: 'Bearer $S{adminAccessToken}'
-        })
-        .withBody(updateRoomOwnerDto)
-        .expectStatus(HttpStatus.OK)
-        .expectJsonMatch({
-            id: '$S{roomOwnerId}',
+    describe('As Admin Role', () => {
+      it('should update the successfully only mark_as_read and admin_comment reservation as admin', () => {
+        const comment = "this is a good opportunity";
+        return pactum
+          .spec()
+          .patch('/room-owners/{id}')
+          .withPathParams('id', '$S{roomOwnerId}')
+          .withHeaders({
+            Authorization: 'Bearer $S{adminAccessToken}'
+          })
+          .withBody({
+            is_mark_as_read: true,
+            admin_comment: comment,
             ...updateRoomOwnerDto
-        })
+          })
+          .expectStatus(HttpStatus.OK)
+          .expectJsonMatch({
+            id: '$S{roomOwnerId}',
+            is_mark_as_read: true,
+            admin_comment: comment,
+            ...updateRoomOwnerDto
+          })
+      });
+
+      it('should update the room owner as admin', () => {
+        return pactum
+          .spec()
+          .patch('/room-owners/{id}')
+          .withPathParams('id', '$S{roomOwnerId}')
+          .withHeaders({
+            Authorization: 'Bearer $S{adminAccessToken}'
+          })
+          .withBody(updateRoomOwnerDto)
+          .expectStatus(HttpStatus.OK)
+          .expectJsonMatch({
+              id: '$S{roomOwnerId}',
+              ...updateRoomOwnerDto
+          })
+      });
     });
 
-    it('should throw error update the room owner as non admin', () => {
-      return pactum
-        .spec()
-        .patch('/room-owners/{id}')
-        .withPathParams('id', '$S{roomOwnerId}')
-        .withHeaders({
-          Authorization: 'Bearer $S{accessToken-user1}'
-        })
-        .expectStatus(HttpStatus.FORBIDDEN)
-    });
+    describe('As Non Admin Role', () => { 
+      it('should throw error update the room owner as non admin', () => {
+        return pactum
+          .spec()
+          .patch('/room-owners/{id}')
+          .withPathParams('id', '$S{roomOwnerId}')
+          .withHeaders({
+            Authorization: 'Bearer $S{accessToken-user1}'
+          })
+          .expectStatus(HttpStatus.FORBIDDEN)
+      });
+    })
   });
 });

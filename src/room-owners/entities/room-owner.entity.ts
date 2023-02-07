@@ -34,4 +34,10 @@ export class RoomOwnerEntity implements RoomOwner {
 
   @ApiProperty()
   room_detail: string;
+
+  @ApiProperty()
+  is_mark_as_read: boolean;
+
+  @ApiProperty()
+  admin_comment: string;
 }

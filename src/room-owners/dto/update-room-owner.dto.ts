@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsString, IsEmail, IsInt, IsOptional, ValidateIf } from 'class-validator';
+import { IsNotEmpty, IsString, IsEmail, IsInt, IsOptional, ValidateIf, IsBoolean } from 'class-validator';
 
 export class UpdateRoomOwnerDto {
     @ApiProperty()
@@ -46,5 +46,17 @@ export class UpdateRoomOwnerDto {
     @IsString()
     @IsOptional()
     room_detail: string;
+
+    @ApiProperty()
+    @ApiPropertyOptional()
+    @IsBoolean()
+    @IsOptional()
+    is_mark_as_read?: boolean;
+
+    @ApiProperty()
+    @ApiPropertyOptional()
+    @IsString()
+    @IsOptional()
+    admin_comment?: string;  
 }
 
