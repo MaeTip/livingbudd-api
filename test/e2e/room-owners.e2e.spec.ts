@@ -2,7 +2,7 @@
 import * as pactum from 'pactum';
 import { string, int } from 'pactum-matchers';
 import { HttpStatus } from '@nestjs/common';
-import { CreateRoomOwnerDto } from 'src/room-owners/dto';
+import { CreateRoomOwnerDto, UpdateRoomOwnerDto } from 'src/room-owners/dto';
 
 const createRoomOwnerDto: CreateRoomOwnerDto = {
   fullname: "John Doe",
@@ -13,6 +13,17 @@ const createRoomOwnerDto: CreateRoomOwnerDto = {
   room_location: "Nontaburi",
   room_detail: "No room detail",
   room_condition: "Only for Man"
+};
+
+const updateRoomOwnerDto: UpdateRoomOwnerDto = {
+  fullname: "John Dee",
+  phone: "0864444444",
+  email: "roomowner_update@gmail.com",
+  contact: "@johndoe_update",
+  room_price: 4000,
+  room_location: "Update Nontaburi ",
+  room_detail: "Update No room detail",
+  room_condition: "Update Only for Man"
 };
 
 describe('RoomOwner', () => {
@@ -82,6 +93,35 @@ describe('RoomOwner', () => {
           Authorization: 'Bearer $S{accessToken-user1}'
         })
         .expectStatus(403)
+    });
+  });
+
+  describe('Update Room Owner', () => {
+    it('should update the room owner as admin', () => {
+      return pactum
+        .spec()
+        .patch('/room-owners/{id}')
+        .withPathParams('id', '$S{roomOwnerId}')
+        .withHeaders({
+          Authorization: 'Bearer $S{adminAccessToken}'
+        })
+        .withBody(updateRoomOwnerDto)
+        .expectStatus(HttpStatus.OK)
+        .expectJsonMatch({
+            id: '$S{roomOwnerId}',
+            ...updateRoomOwnerDto
+        })
+    });
+
+    it('should throw error update the room owner as non admin', () => {
+      return pactum
+        .spec()
+        .patch('/room-owners/{id}')
+        .withPathParams('id', '$S{roomOwnerId}')
+        .withHeaders({
+          Authorization: 'Bearer $S{accessToken-user1}'
+        })
+        .expectStatus(HttpStatus.FORBIDDEN)
     });
   });
 });

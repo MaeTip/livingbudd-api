@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateRoomOwnerDto } from './dto/create-room-owner.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { RoomOwnerEntity } from './entities/room-owner.entity';
+import { UpdateRoomOwnerDto } from './dto';
 
 @Injectable()
 export class RoomOwnersService {
@@ -44,6 +45,22 @@ export class RoomOwnersService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async update(id: number, dto: UpdateRoomOwnerDto) : Promise<RoomOwnerEntity> {
+    try {
+      const result = await this.prisma.roomOwner.update({
+        where: {
+          id,
+        },
+       data: {
+         ...dto,
+       }
+     });
+     return result
+   } catch (error) {
+     throw error;
+   }
   }
 
 }
