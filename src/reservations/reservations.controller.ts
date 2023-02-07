@@ -6,13 +6,16 @@ import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { JwtGuard } from 'src/auth/guard';
 import { ConfigService } from '@nestjs/config';
+import { Role } from '@prisma/client';
+import { Roles } from '../auth/decorator';
+import { RolesGuard } from 'src/auth/guard/roles.guard';
 
 @Controller('reservations')
 @ApiTags('Reservations')
 export class ReservationsController {
   constructor(
-    private readonly reservationsService: ReservationsService, 
-    private readonly mailerService: MailerService, 
+    private readonly reservationsService: ReservationsService,
+    private readonly mailerService: MailerService,
     private config: ConfigService
   ) { }
 
@@ -48,25 +51,29 @@ export class ReservationsController {
     return result
   }
 
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Get()
   findAll() {
     return this.reservationsService.findAll();
   }
 
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.reservationsService.findOne(+id);
   }
 
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateReservationDto: UpdateReservationDto) {
     return this.reservationsService.update(+id, updateReservationDto);
   }
 
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.reservationsService.remove(+id);
