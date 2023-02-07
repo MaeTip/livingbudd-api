@@ -35,6 +35,9 @@ model RoomOwner {
   room_price Int
   room_condition String?
   room_detail String?
+
+  is_mark_as_read Boolean? @default(false)
+  admin_comment String?
 }
 
 model Reservation {

@@ -2,22 +2,28 @@
     "configurations": [
         {
             "type": "node-terminal",
-            "name": "Run Test",
+            "name": "test:e2e:watch",
+            "request": "launch",
+            "command": "yarn run test:e2e:watch",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "node-terminal",
+            "name": "test:e2e",
             "request": "launch",
             "command": "yarn run test:e2e",
             "cwd": "${workspaceFolder}"
         },
-
         {
             "type": "node-terminal",
-            "name": "Run Dev",
+            "name": "start:dev",
             "request": "launch",
             "command": "yarn run start:dev",
             "cwd": "${workspaceFolder}"
         },
         {
             "type": "node-terminal",
-            "name": "Run Prod",
+            "name": "start:prod",
             "request": "launch",
             "command": "yarn run start:prod",
             "cwd": "${workspaceFolder}"
