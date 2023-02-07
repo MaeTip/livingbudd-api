@@ -1,0 +1,34 @@
+name: e2e testing
+
+on:
+  pull_request:
+    branches:
+      - develop
+jobs:
+  test:
+    name: Run E2E test suite
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checking out code
+        uses: actions/checkout@v3
+      - name: Installing Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - name: Installing dependencies
+        run: yarn install
+      - name: Create .env.test
+        run: |
+          cp .env.example .env.test
+        shell: bash
+      - name: docker-compose up for db:test
+        run: yarn run db:test:restart
+      - name: Run e2e testing
+        run: yarn run test:e2e 
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: JEST Tests
+          path: coverage/jest-junit.xml    
+          reporter: jest-junit
