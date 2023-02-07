@@ -20,18 +20,15 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       transform: true,
-    })
-  )
+    }),
+  );
 
   app.enableCors({
     credentials: true,
-    origin: [
-      'http://localhost:3000',
-      'https://livingbudd.com',
-    ]
+    origin: ['http://localhost:3000', 'https://livingbudd.com'],
   });
   app.setGlobalPrefix('api');
-  
+
   await app.listen(configService.get('app.port'));
 }
 bootstrap();

@@ -1,4 +1,3 @@
-
 import * as pactum from 'pactum';
 import { string } from 'pactum-matchers';
 import { Gender, Vehicle } from '@prisma/client';
@@ -7,33 +6,33 @@ import { CreateReservationDto } from 'src/reservations/dto/create-reservation.dt
 import { UpdateReservationDto } from 'src/reservations/dto/update-reservation.dto';
 
 const dto: CreateReservationDto = {
-  email: "test@gmail.com",
-  fullname: "Reservation Fullname",
+  email: 'test@gmail.com',
+  fullname: 'Reservation Fullname',
   gender: Gender.FEMALE,
   age: 31,
-  phone: "086333333",
-  contact: "",
+  phone: '086333333',
+  contact: '',
   number_of_tenant: 2,
   has_pet: true,
   air_conditioner_request: true,
   vehicle: Vehicle.CAR,
-  working_address: "Nontaburi",
-  additional_request: "No additional request"
+  working_address: 'Nontaburi',
+  additional_request: 'No additional request',
 };
 
 const updateDto: UpdateReservationDto = {
-  email: "update@gmail.com",
-  fullname: "Update Fullname",
+  email: 'update@gmail.com',
+  fullname: 'Update Fullname',
   gender: Gender.MALE,
   age: 40,
-  phone: "086-444-4444",
-  contact: "update contact",
+  phone: '086-444-4444',
+  contact: 'update contact',
   number_of_tenant: 3,
   has_pet: false,
   air_conditioner_request: false,
   vehicle: Vehicle.MOTORCYCLE,
-  working_address: "Update Nontaburi",
-  additional_request: "Update No additional request"
+  working_address: 'Update Nontaburi',
+  additional_request: 'Update No additional request',
 };
 
 describe('Reservation', () => {
@@ -47,7 +46,7 @@ describe('Reservation', () => {
         .expectBodyContains(dto.email)
         .expectBodyContains(dto.fullname)
         .expectBodyContains(dto.phone)
-        .stores('reservationId', 'data.id')
+        .stores('reservationId', 'data.id');
     });
 
     it('should get new reservation as admin', () => {
@@ -56,10 +55,10 @@ describe('Reservation', () => {
         .get('/reservations/{id}')
         .withPathParams('id', '$S{reservationId}')
         .withHeaders({
-          Authorization: 'Bearer $S{adminAccessToken}'
+          Authorization: 'Bearer $S{adminAccessToken}',
         })
         .expectJsonMatch(dto)
-        .expectStatus(HttpStatus.OK)
+        .expectStatus(HttpStatus.OK);
     });
 
     it('should throw error getting the new reservation as non admin', () => {
@@ -68,9 +67,9 @@ describe('Reservation', () => {
         .get('/reservations/{id}')
         .withPathParams('id', '$S{reservationId}')
         .withHeaders({
-          Authorization: 'Bearer $S{accessToken-user1}'
+          Authorization: 'Bearer $S{accessToken-user1}',
         })
-        .expectStatus(HttpStatus.FORBIDDEN)
+        .expectStatus(HttpStatus.FORBIDDEN);
     });
   });
 
@@ -80,7 +79,7 @@ describe('Reservation', () => {
         .spec()
         .get('/reservations')
         .withHeaders({
-          Authorization: 'Bearer $S{adminAccessToken}'
+          Authorization: 'Bearer $S{adminAccessToken}',
         })
         .expectJsonMatch({
           data: [
@@ -88,12 +87,12 @@ describe('Reservation', () => {
               id: '$S{reservationId}',
               fullname: string(),
               phone: string(),
-              ...dto
+              ...dto,
             },
-          ]
+          ],
         })
         .expectJsonLength('data', 1)
-        .expectStatus(HttpStatus.OK)
+        .expectStatus(HttpStatus.OK);
     });
 
     it('should throw error getting all reservations as non admin', () => {
@@ -101,12 +100,11 @@ describe('Reservation', () => {
         .spec()
         .get('/reservations')
         .withHeaders({
-          Authorization: 'Bearer $S{accessToken-user1}'
+          Authorization: 'Bearer $S{accessToken-user1}',
         })
-        .expectStatus(403)
+        .expectStatus(403);
     });
   });
-
 
   describe('Update Reservation', () => {
     it('should update the reservation as admin', () => {
@@ -115,16 +113,16 @@ describe('Reservation', () => {
         .patch('/reservations/{id}')
         .withPathParams('id', '$S{reservationId}')
         .withHeaders({
-          Authorization: 'Bearer $S{adminAccessToken}'
+          Authorization: 'Bearer $S{adminAccessToken}',
         })
         .withBody(updateDto)
         .expectStatus(HttpStatus.OK)
         .expectJsonMatch({
           data: {
             id: '$S{reservationId}',
-            ...updateDto
-          }
-        })
+            ...updateDto,
+          },
+        });
     });
 
     it('should throw error update reservation as non admin', () => {
@@ -133,10 +131,10 @@ describe('Reservation', () => {
         .patch('/reservations/{id}')
         .withPathParams('id', '$S{reservationId}')
         .withHeaders({
-          Authorization: 'Bearer $S{accessToken-user1}'
+          Authorization: 'Bearer $S{accessToken-user1}',
         })
-        .expectStatus(HttpStatus.FORBIDDEN)
-      });
+        .expectStatus(HttpStatus.FORBIDDEN);
+    });
   });
 
   describe('Delete Reservation', () => {
@@ -146,9 +144,9 @@ describe('Reservation', () => {
         .delete('/reservations/{id}')
         .withPathParams('id', '$S{reservationId}')
         .withHeaders({
-          Authorization: 'Bearer $S{accessToken-user1}'
+          Authorization: 'Bearer $S{accessToken-user1}',
         })
-        .expectStatus(403)
+        .expectStatus(403);
     });
 
     it('should delete the reservation as admin', () => {
@@ -157,15 +155,14 @@ describe('Reservation', () => {
         .delete('/reservations/{id}')
         .withPathParams('id', '$S{reservationId}')
         .withHeaders({
-          Authorization: 'Bearer $S{adminAccessToken}'
+          Authorization: 'Bearer $S{adminAccessToken}',
         })
         .expectJsonMatch({
           data: {
-            id: '$S{reservationId}'
+            id: '$S{reservationId}',
           },
         })
-        .expectStatus(HttpStatus.OK)
+        .expectStatus(HttpStatus.OK);
     });
   });
-
 });

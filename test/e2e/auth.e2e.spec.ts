@@ -1,4 +1,3 @@
-
 import * as pactum from 'pactum';
 import { UserSignUpDto } from 'src/auth/dto';
 
@@ -12,11 +11,7 @@ const dto: UserSignUpDto = {
 describe('Auth', () => {
   describe('Sign up', () => {
     it('should signup', () => {
-      return pactum
-        .spec()
-        .post('/auth/signup')
-        .withBody(dto)
-        .expectStatus(201);
+      return pactum.spec().post('/auth/signup').withBody(dto).expectStatus(201);
     });
 
     it('should throw exception if email empty', () => {
@@ -40,11 +35,7 @@ describe('Auth', () => {
     });
 
     it('should throw exception if no body provided', () => {
-      return pactum
-        .spec()
-        .post('/auth/signup')
-        .withBody({})
-        .expectStatus(400);
+      return pactum.spec().post('/auth/signup').withBody({}).expectStatus(400);
     });
   });
 

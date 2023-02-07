@@ -21,5 +21,5 @@ export class UserSignUpDto extends AuthDto {
 
 export class AdminSignUpDto extends UserSignUpDto {
   @IsString()
-  role?: Role = Role.USER
+  role?: Role = Role.USER;
 }

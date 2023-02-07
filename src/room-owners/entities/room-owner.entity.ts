@@ -22,7 +22,7 @@ export class RoomOwnerEntity implements RoomOwner {
 
   @ApiProperty()
   contact: string;
-  
+
   @ApiProperty()
   room_location: string;
 
