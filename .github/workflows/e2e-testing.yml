@@ -23,12 +23,8 @@ jobs:
         shell: bash
       - name: docker-compose up for db:test
         run: yarn run db:test:restart
-      - name: run e2e testing
+      - name: Run e2e testing
         run: yarn run test:e2e 
-  check-coverage:
-    runs-on: ubuntu-latest
-    needs: [test]
-    steps:
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: success() || failure()    # run this step even if previous step failed
