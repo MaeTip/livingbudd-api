@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRoomOwnerDto } from './dto/create-room-owner.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { RoomOwnerEntity } from './entities/room-owner.entity';
 
 @Injectable()
 export class RoomOwnersService {
-  constructor (private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
-  async create(createRoomOwnerDto: CreateRoomOwnerDto) {
+  async create(createRoomOwnerDto: CreateRoomOwnerDto): Promise<{ data: RoomOwnerEntity }> {
     try {
-       const result = await this.prisma.roomOwner.create({
+      const result = await this.prisma.roomOwner.create({
         data: {
           ...createRoomOwnerDto,
         }
@@ -21,16 +22,28 @@ export class RoomOwnersService {
     }
   }
 
- async findAll() {
-  try {
-    const result = await this.prisma.roomOwner.findMany();
+  async findAll(): Promise<{ data: RoomOwnerEntity[] }> {
+    try {
+      const result = await this.prisma.roomOwner.findMany();
 
-    return {
-      data: result
+      return {
+        data: result
+      }
+    } catch (error) {
+      throw error;
     }
-  } catch (error) {
-    throw error;
   }
- }
- 
+
+  async findOne(id: number): Promise<RoomOwnerEntity> {
+    try {
+      return this.prisma.roomOwner.findFirst({
+        where: {
+          id
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }
