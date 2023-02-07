@@ -9,10 +9,10 @@ jobs:
     name: Run E2E test suite
     runs-on: ubuntu-latest
     steps:
-      - name: Build docker images
-        run: docker-compose up test-db
       - name: Checking out code
         uses: actions/checkout@v3
+      - name: Build docker images
+        run: docker-compose up test-db  
       - name: Installing Node.js
         uses: actions/setup-node@v3
         with:
