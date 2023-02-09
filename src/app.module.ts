@@ -4,7 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-import { RoomModule } from './room/room.module';
+import { RoomModule } from './module/room/room.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ReservationsModule } from './reservations/reservations.module';
 import { HealthModule } from './health/health.module';
@@ -18,32 +18,29 @@ import smtpConfig from './config/smtp.config';
     ConfigModule.forRoot({
       isGlobal: true,
       expandVariables: true,
-      load: [
-        appConfig,
-        smtpConfig
-      ]
+      load: [appConfig, smtpConfig],
     }),
     MailerModule.forRoot({
       transport: {
         service: 'gmail',
         auth: {
           user: process.env.SMTP_USERNAME,
-          pass: process.env.SMTP_PASSWORD
-        }
+          pass: process.env.SMTP_PASSWORD,
+        },
       },
       defaults: {
-        from: process.env.SMTP_DEFAULT_SENDER
+        from: process.env.SMTP_DEFAULT_SENDER,
       },
     }),
     PrismaModule,
     HealthModule,
     AuthModule,
     UserModule,
-    RoomModule, 
-    ReservationsModule, 
-    RoomOwnersModule
+    RoomModule,
+    ReservationsModule,
+    RoomOwnersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

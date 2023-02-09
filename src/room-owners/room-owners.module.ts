@@ -4,6 +4,6 @@ import { RoomOwnersService } from './room-owners.service';
 
 @Module({
   providers: [RoomOwnersService],
-  controllers: [RoomOwnersController]
+  controllers: [RoomOwnersController],
 })
 export class RoomOwnersModule {}

@@ -27,11 +27,15 @@ export async function initApp(): Promise<INestApplication> {
     new ValidationPipe({
       whitelist: true,
       transform: true,
-    })
+    }),
   );
 
-  reservationsController = moduleRef.get<ReservationsController>(ReservationsController);
-  jest.spyOn(reservationsController, 'sentemail').mockImplementation(() => "sent email!"); 
+  reservationsController = moduleRef.get<ReservationsController>(
+    ReservationsController,
+  );
+  jest
+    .spyOn(reservationsController, 'sentemail')
+    .mockImplementation(() => 'sent email!');
 
   await app.init();
   await app.listen(port);
@@ -63,19 +67,19 @@ async function createAdminUser() {
     firstName: `Admin`,
     lastName: `Livingbudd`,
     password: '1234',
-    role: Role.ADMIN
-  }
-  await authService.adminSignup(adminUser)
+    role: Role.ADMIN,
+  };
+  await authService.adminSignup(adminUser);
 
-  return adminUser
+  return adminUser;
 }
 
 global.beforeAll(async () => {
   app = await initApp();
   prisma = await initPrisma();
   await pactum.request.setBaseUrl(`http://localhost:${port}/api`);
-  
-  const adminUser = await createAdminUser()
+
+  const adminUser = await createAdminUser();
 
   await pactum.spec('loginAdminUser', adminUser);
   await pactum.spec('createUser', 'user1');

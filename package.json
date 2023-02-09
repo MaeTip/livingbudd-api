@@ -23,6 +23,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "pretest:e2e": "yarn run db:test:restart",
     "test:e2e": "dotenv -e .env.test -- jest --no-cache --runInBand --coverage",
     "test:e2e:watch": "dotenv -e .env.test -- jest --watch --no-cache --runInBand --forceExit",
     "prisma:test:deploy": "dotenv -e .env.test -- prisma migrate deploy",
@@ -57,6 +58,7 @@
     "swagger-ui-express": "^4.6.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",
@@ -87,8 +89,13 @@
   "jest": {
     "rootDir": ".",
     "coverageDirectory": "<rootDir>/coverage",
-    "coverageReporters": ["html"],
-    "reporters": [ "default", "jest-junit" ],
+    "coverageReporters": [
+      "html"
+    ],
+    "reporters": [
+      "default",
+      "jest-junit"
+    ],
     "moduleFileExtensions": [
       "js",
       "json",

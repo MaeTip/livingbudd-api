@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ReservationsService } from './reservations.service';
@@ -16,8 +25,8 @@ export class ReservationsController {
   constructor(
     private readonly reservationsService: ReservationsService,
     private readonly mailerService: MailerService,
-    private config: ConfigService
-  ) { }
+    private config: ConfigService,
+  ) {}
 
   sentemail(data: CreateReservationDto) {
     if (data) {
@@ -32,10 +41,10 @@ export class ReservationsController {
           `,
         })
         .then(() => {
-          console.log('sent success!!')
+          console.log('sent success!!');
         })
         .catch((e) => {
-          console.log('sent failed!!', e)
+          console.log('sent failed!!', e);
         });
     }
   }
@@ -45,10 +54,10 @@ export class ReservationsController {
     const result = this.reservationsService.create(createReservationDto);
 
     result.then((value) => {
-      this.sentemail(value.data)
-    })
+      this.sentemail(value.data);
+    });
 
-    return result
+    return result;
   }
 
   @UseGuards(JwtGuard, RolesGuard)
@@ -68,7 +77,10 @@ export class ReservationsController {
   @UseGuards(JwtGuard, RolesGuard)
   @Roles(Role.ADMIN)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateReservationDto: UpdateReservationDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateReservationDto: UpdateReservationDto,
+  ) {
     return this.reservationsService.update(+id, updateReservationDto);
   }
 

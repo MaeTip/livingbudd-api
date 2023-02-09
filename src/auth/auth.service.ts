@@ -10,7 +10,11 @@ import { Role } from '@prisma/client';
 
 @Injectable({})
 export class AuthService {
-  constructor(private prisma: PrismaService, private config: ConfigService, private jwt: JwtService) {}
+  constructor(
+    private prisma: PrismaService,
+    private config: ConfigService,
+    private jwt: JwtService,
+  ) {}
 
   async signup(dto: UserSignUpDto): Promise<AuthEntity> {
     const hash = await argon.hash(dto.password);
@@ -31,18 +35,21 @@ export class AuthService {
         },
       });
 
-      const token = await this.jwt.signAsync({
-        sub: user.id,
-        email: user.email,
-      }, {
-        expiresIn: '5d',
-        secret: secret,
-      });
+      const token = await this.jwt.signAsync(
+        {
+          sub: user.id,
+          email: user.email,
+        },
+        {
+          expiresIn: '5d',
+          secret: secret,
+        },
+      );
 
       authEntity = {
         access_token: token,
-        user_id: user.id as unknown as string
-      }
+        user_id: user.id as unknown as string,
+      };
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -65,7 +72,7 @@ export class AuthService {
           hash,
           firstName: dto.firstName,
           lastName: dto.lastName,
-          role: Role.ADMIN
+          role: Role.ADMIN,
         },
         select: {
           id: true,
@@ -105,7 +112,10 @@ export class AuthService {
     return this.signToken(user.id, user.email);
   }
 
-  async signToken(userId: number, email: string): Promise<{ access_token: string }> {
+  async signToken(
+    userId: number,
+    email: string,
+  ): Promise<{ access_token: string }> {
     const secret = this.config.get('JWT_SECRET');
     const payload = {
       sub: userId,

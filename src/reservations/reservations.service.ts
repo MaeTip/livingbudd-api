@@ -9,14 +9,14 @@ export class ReservationsService {
 
   async create(createReservationDto: CreateReservationDto) {
     try {
-       const result = await this.prisma.reservation.create({
+      const result = await this.prisma.reservation.create({
         data: {
           ...createReservationDto,
-        }
+        },
       });
       return {
-        data: result
-      }
+        data: result,
+      };
     } catch (error) {
       throw error;
     }
@@ -24,11 +24,11 @@ export class ReservationsService {
 
   async findAll() {
     try {
-      const result =  await this.prisma.reservation.findMany();
+      const result = await this.prisma.reservation.findMany();
 
       return {
-        data: result
-      }
+        data: result,
+      };
     } catch (error) {
       throw error;
     }
@@ -38,7 +38,7 @@ export class ReservationsService {
     try {
       return this.prisma.reservation.findFirst({
         where: {
-          id
+          id,
         },
       });
     } catch (error) {
@@ -52,16 +52,16 @@ export class ReservationsService {
         where: {
           id,
         },
-       data: {
-         ...updateReservationDto,
-       }
-     });
-     return {
-       data: result
-     }
-   } catch (error) {
-     throw error;
-   }
+        data: {
+          ...updateReservationDto,
+        },
+      });
+      return {
+        data: result,
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 
   async remove(id: number) {
@@ -73,8 +73,8 @@ export class ReservationsService {
 
     return {
       data: {
-        id
-      }
-    }
+        id,
+      },
+    };
   }
 }

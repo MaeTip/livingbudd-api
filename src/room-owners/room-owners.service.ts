@@ -6,18 +6,20 @@ import { UpdateRoomOwnerDto } from './dto';
 
 @Injectable()
 export class RoomOwnersService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
-  async create(createRoomOwnerDto: CreateRoomOwnerDto): Promise<{ data: RoomOwnerEntity }> {
+  async create(
+    createRoomOwnerDto: CreateRoomOwnerDto,
+  ): Promise<{ data: RoomOwnerEntity }> {
     try {
       const result = await this.prisma.roomOwner.create({
         data: {
           ...createRoomOwnerDto,
-        }
+        },
       });
       return {
-        data: result
-      }
+        data: result,
+      };
     } catch (error) {
       throw error;
     }
@@ -28,8 +30,8 @@ export class RoomOwnersService {
       const result = await this.prisma.roomOwner.findMany();
 
       return {
-        data: result
-      }
+        data: result,
+      };
     } catch (error) {
       throw error;
     }
@@ -39,7 +41,7 @@ export class RoomOwnersService {
     try {
       return this.prisma.roomOwner.findFirst({
         where: {
-          id
+          id,
         },
       });
     } catch (error) {
@@ -47,20 +49,19 @@ export class RoomOwnersService {
     }
   }
 
-  async update(id: number, dto: UpdateRoomOwnerDto) : Promise<RoomOwnerEntity> {
+  async update(id: number, dto: UpdateRoomOwnerDto): Promise<RoomOwnerEntity> {
     try {
       const result = await this.prisma.roomOwner.update({
         where: {
           id,
         },
-       data: {
-         ...dto,
-       }
-     });
-     return result
-   } catch (error) {
-     throw error;
-   }
+        data: {
+          ...dto,
+        },
+      });
+      return result;
+    } catch (error) {
+      throw error;
+    }
   }
-
 }
