@@ -17,7 +17,7 @@ const createRoomDto: CreateRoomDto = {
   maintenance_fee: faker.datatype.number({min: 1000, max: 10000}),
   amenities: faker.helpers.arrayElements(AmenityList, 3).toString(),
   facilities: faker.helpers.arrayElements(FacilityList, 3).toString(),
-  nearby_area: faker.lorem.lines(),
+  nearby_area: faker.lorem.sentence(),
   is_created_by_owner: false,
   rental_price: faker.datatype.number({min: 1000, max: 10000}),
   rental_desposit: faker.datatype.number(2),
@@ -39,7 +39,7 @@ describe('Room E2E', () => {
           .expectJsonMatch({
             ...createRoomDto,
           })
-          .stores('roomId', 'id').inspect();
+          .stores('roomId', 'id');
       });
 
       it('should get new room owner', () => {
