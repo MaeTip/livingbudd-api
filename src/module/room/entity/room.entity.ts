@@ -1,8 +1,24 @@
 import { Room } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
-export const FacilityList: string[] = new Array("wifi", "lift", "parking", "security", "keycard_access_control", "cctv", "swimming_pool" ,"fitness")  
-export const AmenityList: string[] = new Array("air_conditioner", "tv", "digital_door_lock", "water_heater", "furnished", "refrigerator")  
+export const FacilityList: string[] = [
+  'wifi',
+  'lift',
+  'parking',
+  'security',
+  'keycard_access_control',
+  'cctv',
+  'swimming_pool',
+  'fitness',
+];
+export const AmenityList: string[] = [
+  'air_conditioner',
+  'tv',
+  'digital_door_lock',
+  'water_heater',
+  'furnished',
+  'refrigerator',
+];
 
 export class RoomEntity implements Room {
   @ApiProperty()
@@ -51,14 +67,14 @@ export class RoomEntity implements Room {
   nearby_area: string;
 
   @ApiProperty()
-  is_created_by_owner: boolean
+  is_created_by_owner: boolean;
 
   @ApiProperty()
-  rental_price: number
+  rental_price: number;
 
   @ApiProperty()
-  rental_desposit: number
+  rental_desposit: number;
 
   @ApiProperty()
-  rental_advance_payment: number
+  rental_advance_payment: number;
 }

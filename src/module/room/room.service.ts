@@ -5,19 +5,19 @@ import { RoomEntity } from './entity/room.entity';
 
 @Injectable()
 export class RoomService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(createRoomDto: CreateRoomDto): Promise<RoomEntity> {
     try {
       const result = await this.prisma.room.create({
         data: {
-          ...createRoomDto
-        }
+          ...createRoomDto,
+        },
       });
 
-      return result;      
+      return result;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -25,21 +25,19 @@ export class RoomService {
     try {
       return this.prisma.room.findFirst({
         where: {
-          id
-        }
-      })
+          id,
+        },
+      });
     } catch (error) {
-      throw error
+      throw error;
     }
   }
-
 
   async findAll(): Promise<RoomEntity[]> {
     try {
-      return this.prisma.room.findMany()
+      return this.prisma.room.findMany();
     } catch (error) {
-      throw error
+      throw error;
     }
   }
-
 }

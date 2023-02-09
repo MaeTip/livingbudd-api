@@ -10,15 +10,13 @@ import { RoomService } from './room.service';
 @Controller('rooms')
 @ApiTags('rooms')
 export class RoomController {
-  constructor(
-    private readonly roomService: RoomService,
-  ) {}
+  constructor(private readonly roomService: RoomService) {}
 
   @UseGuards(JwtGuard, RolesGuard)
   @Roles(Role.ADMIN)
   @Post()
   create(@Body() createRoomDto: CreateRoomDto): Promise<RoomEntity> {
-    return this.roomService.create(createRoomDto)
+    return this.roomService.create(createRoomDto);
   }
 
   @UseGuards(JwtGuard, RolesGuard)
@@ -32,6 +30,6 @@ export class RoomController {
   @Roles(Role.ADMIN)
   @Get()
   findAll(): Promise<RoomEntity[]> {
-    return this.roomService.findAll()
+    return this.roomService.findAll();
   }
 }

@@ -1,10 +1,6 @@
-import { ToBoolean } from "@common/decorator";
-import { ApiProperty } from "@nestjs/swagger";
-import {
-  IsNotEmpty,
-  IsInt,
-  IsOptional,
-} from 'class-validator';
+import { ToBoolean } from '@common/decorator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsInt, IsOptional } from 'class-validator';
 
 export class CreateRoomDto {
   @ApiProperty()
@@ -58,19 +54,19 @@ export class CreateRoomDto {
 
   @ApiProperty()
   @ToBoolean()
-  is_created_by_owner: boolean
+  is_created_by_owner: boolean;
 
   @ApiProperty()
   @IsInt()
-  rental_price: number
-
-  @ApiProperty()
-  @IsOptional()
-  @IsInt()
-  rental_desposit: number
+  rental_price: number;
 
   @ApiProperty()
   @IsOptional()
   @IsInt()
-  rental_advance_payment: number
+  rental_desposit: number;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsInt()
+  rental_advance_payment: number;
 }
