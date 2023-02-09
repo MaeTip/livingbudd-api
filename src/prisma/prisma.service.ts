@@ -19,6 +19,7 @@ export class PrismaService extends PrismaClient {
       this.user.deleteMany(),
       this.reservation.deleteMany(),
       this.roomOwner.deleteMany(),
+      this.room.deleteMany(),
     ]);
   }
 }

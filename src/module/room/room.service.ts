@@ -21,7 +21,7 @@ export class RoomService {
     }
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<RoomEntity> {
     try {
       return this.prisma.room.findFirst({
         where: {
@@ -34,18 +34,12 @@ export class RoomService {
   }
 
 
-
-
-  // async findOne(id: number) {
-  //   try {
-  //     return this.prisma.reservation.findFirst({
-  //       where: {
-  //         id,
-  //       },
-  //     });
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
+  async findAll(): Promise<RoomEntity[]> {
+    try {
+      return this.prisma.room.findMany()
+    } catch (error) {
+      throw error
+    }
+  }
 
 }

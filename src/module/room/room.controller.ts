@@ -28,4 +28,10 @@ export class RoomController {
     return this.roomService.findOne(+id);
   }
 
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  @Get()
+  findAll(): Promise<RoomEntity[]> {
+    return this.roomService.findAll()
+  }
 }
