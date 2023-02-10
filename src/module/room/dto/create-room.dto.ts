@@ -53,6 +53,10 @@ export class CreateRoomDto {
   nearby_area: string;
 
   @ApiProperty()
+  @IsOptional()
+  detail: string;
+
+  @ApiProperty()
   @ToBoolean()
   is_created_by_owner: boolean;
 
@@ -63,7 +67,7 @@ export class CreateRoomDto {
   @ApiProperty()
   @IsOptional()
   @IsInt()
-  rental_desposit: number;
+  rental_deposit: number;
 
   @ApiProperty()
   @IsOptional()

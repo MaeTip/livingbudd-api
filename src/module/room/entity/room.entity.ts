@@ -67,13 +67,16 @@ export class RoomEntity implements Room {
   nearby_area: string;
 
   @ApiProperty()
+  detail: string;
+
+  @ApiProperty()
   is_created_by_owner: boolean;
 
   @ApiProperty()
   rental_price: number;
 
   @ApiProperty()
-  rental_desposit: number;
+  rental_deposit: number;
 
   @ApiProperty()
   rental_advance_payment: number;

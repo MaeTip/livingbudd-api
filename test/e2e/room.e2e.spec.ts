@@ -18,9 +18,10 @@ const generateRoomData = (): CreateRoomDto => {
     amenities: faker.helpers.arrayElements(AmenityList, 3).toString(),
     facilities: faker.helpers.arrayElements(FacilityList, 3).toString(),
     nearby_area: faker.lorem.sentence(),
+    detail: faker.lorem.sentence(),
     is_created_by_owner: false,
     rental_price: faker.datatype.number({ min: 1000, max: 10000 }),
-    rental_desposit: faker.datatype.number(2),
+    rental_deposit: faker.datatype.number(2),
     rental_advance_payment: faker.datatype.number(2),
   };
 };

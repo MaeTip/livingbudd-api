@@ -87,6 +87,7 @@ model Room {
   building String?
   floor String?
   size Int
+  detail String?
   number_of_bedroom Int
   number_of_bathroom Int? @default(0)
   maintenance_fee Int?
@@ -96,6 +97,6 @@ model Room {
   is_created_by_owner Boolean @default(false)
 
   rental_price Int
-  rental_desposit Int?
+  rental_deposit Int?
   rental_advance_payment Int?
 }
